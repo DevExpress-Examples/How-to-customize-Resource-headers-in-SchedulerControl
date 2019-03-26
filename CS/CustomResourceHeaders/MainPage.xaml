@@ -1,0 +1,66 @@
+﻿<Page
+    x:Class="CustomResourceHeaders.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:dxsch="using:DevExpress.UI.Xaml.Scheduler"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CustomResourceHeaders"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxschi="using:DevExpress.UI.Xaml.Scheduler.Internal"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style TargetType="dxschi:DayResourceHeaderControl">
+            <Setter Property="BorderThickness" Value="0,1,0,0"/>
+            <!--<Setter Property="BorderBrush" Value="{ThemeResource SchedulerViewHeaderCellBorderBrush}"/>-->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxschi:DayResourceHeaderControl">
+                        <Border Background="{Binding Resource.Style.Brush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Padding="15">
+                            <StackPanel Orientation="Vertical">
+                                <Image 
+                                    Height="100"
+                                    Width="100"
+                                    Source="{Binding Resource.SourceObject.SourceObject.ResourceImage, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                    HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding  Resource.Caption, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                           HorizontalAlignment="Center"
+                                           Margin="3,10"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Page.DataContext>
+        <local:MainViewModel/>
+    </Page.DataContext>                                                                                
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox ItemsSource="{Binding ResourceItems}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Name}" Foreground="Black" IsChecked="{Binding IsVisible, Mode=TwoWay}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <dxsch:SchedulerControl Grid.Column="1"
+                                GroupType="Resource">
+            <dxsch:Calendar ResourcesSource="{Binding ResourceItems}">
+                <dxsch:Calendar.ResourceMappings>
+                    <dxsch:ResourceMappings Id="Id" 
+                                            Caption="Name"
+                                            Visible="IsVisible"/>
+                </dxsch:Calendar.ResourceMappings>
+            </dxsch:Calendar>
+        </dxsch:SchedulerControl>
+    </Grid>
+</Page>
+                                                              
